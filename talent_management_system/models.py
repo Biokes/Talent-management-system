@@ -50,3 +50,13 @@ class Training(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     location = models.CharField(max_length=255)
+
+
+class Goal(models.Model):
+    id = models.AutoField(primary_key=True)
+    employee_id = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True, blank=True)
+    description = models.CharField(max_length=255)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    STATUS = [('PEN', 'PENDING'), ('IN_PRO', 'IN PROGRESS'), ('COMP', 'COMPLETED')]
+    status = models.CharField(max_length=15, choices=STATUS, default='PEN')
