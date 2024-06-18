@@ -43,7 +43,7 @@ class PerformanceReview(models.Model):
     reviewer_id = models.ForeignKey(Manager, on_delete=models.CASCADE, null=True, blank=True)
     employee_id = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True, blank=True)
     review_date = models.DateField()
-    overall_rating = models.IntegerChoices('1', '2', '3', '4', '5')
+    OVERALL_RATING = [('1', 'VERY POOR'), ('2', 'POOR'), ('3', 'AVERAGE'), ('4', 'GOOD'), ('5', 'VERY GOOD')]
     comment = models.TextField()
 
     class Meta:
