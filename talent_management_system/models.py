@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Staff(models.Model):
     employee_id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=255)
@@ -8,13 +9,22 @@ class Staff(models.Model):
     phone_number = models.CharField(max_length=15)
     position = models.CharField(max_length=50)
 
+    class Meta:
+        db_table = "staff"
+
 
 class Manager(Staff):
     department_managed = models.CharField(max_length=255)
 
+    class Meta:
+        db_table = "managers"
+
 
 class Employee(Staff):
     manager_id = models.ForeignKey(Manager, on_delete=models.CASCADE, null=True, blank=True)
+
+    class Meta:
+        db_table = "employees"
 
 
 class Skill(models.Model):
@@ -23,6 +33,9 @@ class Skill(models.Model):
     name = models.CharField(max_length=255)
     PROFICIENCY_LEVEL = [('B', 'BEGINNER'), ('I', 'INTERMEDIATE'), ('A', 'ADVANCED')]
     proficiency = models.CharField(max_length=15, choices=PROFICIENCY_LEVEL, default='B')
+
+    class Meta:
+        db_table = "skills"
 
 
 class PerformanceReview(models.Model):
@@ -33,6 +46,9 @@ class PerformanceReview(models.Model):
     overall_rating = models.IntegerChoices('1', '2', '3', '4', '5')
     comment = models.TextField()
 
+    class Meta:
+        db_table = "performanceReviews"
+
 
 class Promotion(models.Model):
     id = models.AutoField(primary_key=True)
@@ -40,6 +56,9 @@ class Promotion(models.Model):
     old_position = models.CharField(max_length=255)
     new_position = models.CharField(max_length=255)
     promotion_date = models.DateField()
+
+    class Meta:
+        db_table = "promotions"
 
 
 class Training(models.Model):
@@ -50,6 +69,9 @@ class Training(models.Model):
     end_date = models.DateField()
     location = models.CharField(max_length=255)
 
+    class Meta:
+        db_table = "trainings"
+
 
 class Goal(models.Model):
     id = models.AutoField(primary_key=True)
@@ -59,3 +81,6 @@ class Goal(models.Model):
     end_date = models.DateField()
     STATUS = [('PEN', 'PENDING'), ('IN_PRO', 'IN PROGRESS'), ('COMP', 'COMPLETED')]
     status = models.CharField(max_length=15, choices=STATUS, default='PEN')
+
+    class Meta:
+        db_table = "goals"
