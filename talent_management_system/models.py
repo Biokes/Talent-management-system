@@ -26,6 +26,7 @@ class Skill(models.Model):
     proficiency = models.CharField(max_length=15, choices=PROFICIENCY_LEVEL, default='B')
 
 
+
 class PerformanceReview(models.Model):
     id = models.AutoField(primary_key=True)
     reviewer_id = models.ForeignKey(Manager, on_delete=models.CASCADE, null=True, blank=True)
