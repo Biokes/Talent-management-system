@@ -26,3 +26,27 @@ class Skill(models.Model):
     proficiency = models.CharField(max_length=15, choices=PROFICIENCY_LEVEL, default='B')
 
 
+class PerformanceReview(models.Model):
+    id = models.AutoField(primary_key=True)
+    reviewer_id = models.ForeignKey(Manager, on_delete=models.CASCADE, null=True, blank=True)
+    employee_id = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True, blank=True)
+    review_date = models.DateField()
+    overall_rating = models.IntegerChoices('1', '2', '3', '4', '5')
+    comment = models.TextField()
+
+
+class Promotion(models.Model):
+    id = models.AutoField(primary_key=True)
+    employee_id = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True, blank=True)
+    old_position = models.CharField(max_length=255)
+    new_position = models.CharField(max_length=255)
+    promotion_date = models.DateField()
+
+
+class Training(models.Model):
+    id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    start_date = models.DateField()
+    end_date = models.DateField()
+    location = models.CharField(max_length=255)
