@@ -38,8 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'talent_management_system.apps.TalentManagementSystemConfig',
-
+    'talent_management_system',
 ]
 
 MIDDLEWARE = [
