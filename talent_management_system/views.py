@@ -19,3 +19,9 @@ def on_board(request):
                                               email=email, phone_number=phone_number)
         new_employee = form.save()
 
+# def edit_employee_details(request):
+#     form =
+#
+#
+# def delete_employee(request):
+#     form =
