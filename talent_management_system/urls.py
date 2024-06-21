@@ -1,7 +1,8 @@
-from django.urls import path, include
+from django.urls import path
 
-from talent_management_system import views
+from . import views
 
 urlpatterns = [
-    path('user/create-user/', views.on_board)
+    path('', views.home, name='home'),
+    path('add_employee/', views.onboard_employee, name='onboard_employee'),
 ]
