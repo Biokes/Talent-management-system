@@ -20,11 +20,12 @@ class EmployeeOnboardingForm(forms.ModelForm):
         }
 
 
-class EmployeeTrainingForm(forms.ModelForm):
+class ScheduleTrainingForm(forms.ModelForm):
     class Meta:
         model = Training
-        fields = ['title', 'description', 'start_date', 'end_date', 'location']
+        fields = ['manager_email', 'title', 'description', 'start_date', 'end_date', 'location']
         widgets = {
+            'manager_email': forms.TextInput(attrs={'placeholder': 'manager_email', 'class': 'form-control'}),
             'title': forms.TextInput(attrs={'placeholder': 'title', 'class': 'form-control'}),
             'description': forms.TextInput(attrs={'placeholder': 'description', 'class': 'form-control'}),
             'start_date': forms.DateInput(attrs={'placeholder': 'start date (YYYY-MM-DD)', 'class': 'form-control'}),
