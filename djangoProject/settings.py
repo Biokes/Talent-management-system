@@ -39,10 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'talent_management_system',
-<<<<<<< HEAD
-=======
 
->>>>>>> 5a8ac38d97e48650016a6292180e7f246ddec438
 ]
 
 MIDDLEWARE = [
@@ -85,7 +82,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'talent-manager',
         'USER': 'postgres',
-        'PASSWORD': 'SQLpassword',
+        'PASSWORD': 'password',
         'HOST': 'localhost',
         'PORT': '5432',
 

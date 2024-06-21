@@ -22,7 +22,7 @@ class EmployeeOnboardingForm(forms.ModelForm):
 class UpdatePasswordForm(forms.ModelForm):
     class Meta:
         model = Employee
-        fields = ['email', 'old_password', 'new_password']
+        fields = ['email', 'password']
         widgets = {
             'email': forms.EmailInput(attrs={'placeholder': 'email', 'type': 'text'}),
             'old_password': forms.PasswordInput(attrs={'placeholder': 'old password', 'type': 'password'}),
