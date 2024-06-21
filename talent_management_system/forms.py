@@ -1,6 +1,6 @@
 from django import forms
 
-from talent_management_system.models import Employee, Manager
+from talent_management_system.models import Employee, Manager, Training
 
 
 class EmployeeOnboardingForm(forms.ModelForm):
@@ -15,6 +15,19 @@ class EmployeeOnboardingForm(forms.ModelForm):
             'phone_number'
             : forms.TextInput(
                 attrs={'placeholder': 'Phone number', 'type': 'number', 'class': 'form-control'})
+        }
+
+
+class EmployeeTrainingForm(forms.ModelForm):
+    class Meta:
+        model = Training
+        fields = ['title', 'description', 'start_date', 'end_date', 'location']
+        widgets = {
+            'title': forms.TextInput(attrs={'placeholder': 'title', 'class': 'form-control'}),
+            'description': forms.TextInput(attrs={'placeholder': 'description', 'class': 'form-control'}),
+            'start_date': forms.DateInput(attrs={'placeholder': 'start date (YYYY-MM-DD)', 'class': 'form-control'}),
+            'end_date': forms.DateInput(attrs={'placeholder': 'end date (YYYY-MM-DD)', 'class': 'form-control'}),
+            'location': forms.TextInput(attrs={'placeholder': 'Training location', 'class': 'form-control'})
         }
 
 
