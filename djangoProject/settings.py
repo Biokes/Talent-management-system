@@ -81,7 +81,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'talent-manager',
         'USER': 'postgres',
-        'PASSWORD': 'SQLpassword',
+        'PASSWORD': 'password',
         'HOST': 'localhost',
         'PORT': '5432',
 

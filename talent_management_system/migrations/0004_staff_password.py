@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='staff',
             name='password',
-            field=models.CharField(default='password', max_length=15),
+            field=models.CharField(default='<PASSWORD>', max_length=15),
         ),
     ]
