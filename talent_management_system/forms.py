@@ -1,5 +1,7 @@
 from django import forms
-from talent_management_system.models import Employee, Manager
+from talent_management_system.models import Employee, Manager, Training
+
+from talent_management_system.models import Employee
 
 
 class EmployeeOnboardingForm(forms.ModelForm):
@@ -25,6 +27,17 @@ class UpdatePasswordForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={'placeholder': 'email', 'type': 'text'}),
             'old_password': forms.PasswordInput(attrs={'placeholder': 'old password', 'type': 'password'}),
             'new_password': forms.PasswordInput(attrs={'placeholder': 'new password', 'type': 'password'})
+        }
+class EmployeeTrainingForm(forms.ModelForm):
+    class Meta:
+        model = Training
+        fields = ['title', 'description', 'start_date', 'end_date', 'location']
+        widgets = {
+            'title': forms.TextInput(attrs={'placeholder': 'title', 'class': 'form-control'}),
+            'description': forms.TextInput(attrs={'placeholder': 'description', 'class': 'form-control'}),
+            'start_date': forms.DateInput(attrs={'placeholder': 'start date (YYYY-MM-DD)', 'class': 'form-control'}),
+            'end_date': forms.DateInput(attrs={'placeholder': 'end date (YYYY-MM-DD)', 'class': 'form-control'}),
+            'location': forms.TextInput(attrs={'placeholder': 'Training location', 'class': 'form-control'})
         }
 
 
