@@ -1,5 +1,5 @@
 from django import forms
-from talent_management_system.models import Employee, Manager, Training
+from talent_management_system.models import Employee, Manager, Training, Goal
 
 from talent_management_system.models import Employee
 
@@ -52,3 +52,16 @@ class ManagerOnboardingForm(forms.ModelForm):
             'password': forms.PasswordInput(attrs={'placeholder': 'Password'}),
             'phone_number': forms.TextInput(attrs={'placeholder': 'Phone number', 'type': 'number'})
         }
+
+
+class SetGoalForm(forms.ModelForm):
+    class Meta:
+        model = Goal
+        fields = ['start_date', 'end_date', 'description', 'name']
+        widgets = {
+            'email': forms.TextInput(attrs={'placeholder': 'username', 'type': 'email'}),
+            'start_date': forms.TextInput(attrs={'placeholder': 'goal start date', 'type': 'date'}),
+            'end_date': forms.TextInput(attrs={'placeholder': 'goal end date', 'type': 'date'}),
+            'description': forms.TextInput(attrs={'placeholder': 'Goal description', 'type': 'text'})
+        }
+
