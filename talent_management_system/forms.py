@@ -2,6 +2,8 @@ from django import forms
 
 from talent_management_system.models import Employee, Manager, Training
 
+from talent_management_system.models import Employee
+
 
 class EmployeeOnboardingForm(forms.ModelForm):
     class Meta:
