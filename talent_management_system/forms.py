@@ -71,8 +71,8 @@ class ManagerOnboardingForm(forms.ModelForm):
 
 class SetGoalForm(forms.ModelForm):
     class Meta:
-        model = Manager
-        fields = ['boss_email','boss_password','start_date', 'end_date', 'description', 'name']
+        model = Goal
+        fields = ['employee_id','start_date', 'end_date', 'description']
         widgets = {
             'boss_email': forms.TextInput(attrs={'placeholder': 'email', 'type': 'text'}),
             'boss_password': forms.TextInput(attrs={'placeholder': 'password', 'type': 'password'}),
@@ -86,7 +86,7 @@ class SetGoalForm(forms.ModelForm):
 class PromoteEmployeeForm(forms.ModelForm):
     class Meta:
         model = Manager
-        fields = ['email', 'password', 'employee_email', 'position']
+        fields = ['email', 'password','position']
         widgets = {
             'email': forms.TextInput(attrs={'placeholder': 'email ', 'type': 'text'}),
             'password': forms.TextInput(attrs={'placeholder': 'password', 'type': 'password'}),
@@ -97,7 +97,7 @@ class PromoteEmployeeForm(forms.ModelForm):
 class DeleteEmployeeForm(forms.ModelForm):
     class Meta:
         model = Manager
-        fields = ['email', 'password', 'employee_email']
+        fields = ['email', 'password']
         widgets = {
             'email': forms.TextInput(attrs={'placeholder': 'email ', 'type': 'text'}),
             'password': forms.TextInput(attrs={'placeholder': 'password', 'type': 'password'}),
@@ -116,7 +116,7 @@ class GetAllEmployeeProfiles(forms.ModelForm):
 class GetEmployeeProfile(forms.ModelForm):
     class Meta:
         model = Manager
-        fields = ['email', 'password', 'employee_email']
+        fields = ['email', 'password']
         widgets = {
             'manager_email': forms.TextInput(attrs={'placeholder': 'email ', 'type': 'text'}),
             'password': forms.TextInput(attrs={'placeholder': 'password', 'type': 'password'}),
