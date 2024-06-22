@@ -87,3 +87,13 @@ class Goal(models.Model):
 
     class Meta:
         db_table = "goals"
+
+
+class WellBeingProgram(models.Model):
+    manager_email = models.EmailField(max_length=100)
+    password = models.CharField(max_length=100)  # Note: Store password securely using hashing, this is just an example
+    title = models.CharField(max_length=100)
+    description = models.TextField()
+    start_date = models.DateField()
+    end_date = models.DateField()
+    location = models.CharField(max_length=100)

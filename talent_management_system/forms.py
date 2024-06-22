@@ -1,5 +1,5 @@
 from django import forms
-from talent_management_system.models import  Manager, Training, Goal
+from talent_management_system.models import Manager, Training, Goal, WellBeingProgram
 
 from talent_management_system.models import Employee
 
@@ -31,6 +31,8 @@ class ScheduleTrainingForm(forms.ModelForm):
             'end_date': forms.DateInput(attrs={'placeholder': 'end date (YYYY-MM-DD)', 'class': 'form-control'}),
             'location': forms.TextInput(attrs={'placeholder': 'Training location', 'class': 'form-control'})
         }
+
+
 class UpdatePasswordForm(forms.ModelForm):
     class Meta:
         model = Employee
@@ -72,7 +74,7 @@ class ManagerOnboardingForm(forms.ModelForm):
 class SetGoalForm(forms.ModelForm):
     class Meta:
         model = Manager
-        fields = ['boss_email','boss_password','start_date', 'end_date', 'description', 'name']
+        fields = ['boss_email', 'boss_password', 'start_date', 'end_date', 'description', 'name']
         widgets = {
             'boss_email': forms.TextInput(attrs={'placeholder': 'email', 'type': 'text'}),
             'boss_password': forms.TextInput(attrs={'placeholder': 'password', 'type': 'password'}),
@@ -94,6 +96,7 @@ class PromoteEmployeeForm(forms.ModelForm):
             'position': forms.TextInput(attrs={'placeholder': 'POSITION', 'type': 'text'})
         }
 
+
 class DeleteEmployeeForm(forms.ModelForm):
     class Meta:
         model = Manager
@@ -104,6 +107,7 @@ class DeleteEmployeeForm(forms.ModelForm):
             'employee_email': forms.TextInput(attrs={'placeholder': 'staff email', 'type': 'email'})
         }
 
+
 class GetAllEmployeeProfiles(forms.ModelForm):
     class Meta:
         model = Manager
@@ -112,6 +116,7 @@ class GetAllEmployeeProfiles(forms.ModelForm):
             'email': forms.TextInput(attrs={'placeholder': 'email ', 'type': 'text'}),
             'password': forms.TextInput(attrs={'placeholder': 'password', 'type': 'password'}),
         }
+
 
 class GetEmployeeProfile(forms.ModelForm):
     class Meta:
@@ -123,3 +128,18 @@ class GetEmployeeProfile(forms.ModelForm):
             'employee_email': forms.TextInput(attrs={'placeholder': 'Employee email ', 'type': 'text'}),
 
         }
+
+
+class WellBeingForm(forms.ModelForm):
+    manager_email = forms.EmailField(label='Manager Email', max_length=100)
+    password = forms.CharField(label='Manager Password', widget=forms.PasswordInput)
+    title = forms.CharField(label='Program Title', max_length=100)
+    description = forms.CharField(label='Program Description', widget=forms.Textarea)
+    start_date = forms.DateField(label='Start Date', widget=forms.DateInput(attrs={'type': 'date'}))
+    end_date = forms.DateField(label='End Date', widget=forms.DateInput(attrs={'type': 'date'}))
+    location = forms.CharField(label='Location', max_length=100)
+
+    class Meta:
+        model = WellBeingProgram
+        fields = ['manager_email', 'password', 'title', 'description', 'start_date', 'end_date', 'location']
+
