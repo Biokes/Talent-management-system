@@ -7,6 +7,7 @@ from talent_management_system.forms import UpdatePasswordForm, SetGoalForm, Prom
 from talent_management_system.forms import EmployeeOnboardingForm, ScheduleTrainingForm
 
 from talent_management_system.models import Employee, Goal, Manager
+from .models import Staff
 
 
 def home(request):
