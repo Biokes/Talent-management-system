@@ -6,7 +6,7 @@ from talent_management_system.forms import UpdatePasswordForm, SetGoalForm, Prom
 
 from talent_management_system.forms import EmployeeOnboardingForm, ScheduleTrainingForm
 
-from talent_management_system.models import Employee, Goal
+from talent_management_system.models import Employee, Goal, Manager
 
 
 def home(request):
@@ -111,13 +111,17 @@ def set_goals_for_employee(request):
         form = SetGoalForm(request.POST)
         if form.is_valid():
             try:
-                manager = authenticate(email=form.cleaned_data['boss_email'],
-                                       password=form.cleaned_data['boss_password'])
+                manager = Manager.objects.get(email=form.cleaned_data['boss_email'],
+                                              password=form.cleaned_data['boss_password'])
                 if manager is None:
                     messages.error(request, 'Invalid manager details.' +
                                    ' Please enter a valid manager details.')
                     return redirect('set_goals_for_employee')
                 employee = Employee.objects.get(email=form.cleaned_data['email'])
+                if employee is None:
+                    messages.error(request, 'Invalid manager details.' +
+                                   ' Please enter a valid manager details.')
+                    return redirect('set_goals_for_employee')
                 goal = Goal.objects.create(
                     employee=employee.employee_id,
                     start_date=form.cleaned_data['start_date'],
@@ -140,6 +144,7 @@ def set_goals_for_employee(request):
 def search_for_all_employees(request):
     if request.method == 'GET':
         form = GetAllEmployeeProfiles(request.GET)
+        context = {'form': form}
         if form.is_valid():
             try:
                 email = form.cleaned_data['email']
@@ -155,7 +160,6 @@ def search_for_all_employees(request):
                 messages.error(request, 'An error occured.')
                 return redirect('set_goals_for_employee')
 
-    context = {'form': form}
     return render(request, 'set_goals_for_employee.html', context)
 
 

@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../static/styles.css">
     <meta charset="UTF-8">
     <title>Title</title>
+    <script>
+        const onBoardEmployeeUrl = "{% url 'onboard_employee' %}";
+    </script>
 </head>
 <body class="body">
 <div class="home-main">
@@ -16,14 +19,14 @@
             <p><span>Data-Driven Insights:</span>Gain valuable insights with comprehensive reports and analytics to make informed decisions.</p>
         </span>
         <div class="buttons">
-            <button class="register" onclick="">Register</button>
+            <button class="register" onclick="window.location.href=onBoardEmployeeUrl">Register</button>
             <button class="login">Login</button>
         </div>
 
     </div>
     <div class="text101">
         <h1 style="font-weight: bolder;font-size: xx-large; border-radius: 5px">Welcome TO TalentLinks.</h1>
-        <img class="image" src="../assets/image1.jpg" alt="image">
+        <img class="image" src="../static/assets/image1.jpg" alt="image">
     </div>
 </div>
 </body>

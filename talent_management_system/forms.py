@@ -89,6 +89,7 @@ class PromoteEmployeeForm(forms.ModelForm):
     class Meta:
         model = Manager
         fields = ['email', 'password', 'position']
+
         widgets = {
             'email': forms.TextInput(attrs={'placeholder': 'email ', 'type': 'text'}),
             'password': forms.TextInput(attrs={'placeholder': 'password', 'type': 'password'}),
