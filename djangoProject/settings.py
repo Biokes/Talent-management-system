@@ -78,18 +78,8 @@ WSGI_APPLICATION = 'djangoProject.wsgi.application'
 
 DATABASES = {
     'default': {
-<<<<<<< HEAD
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-=======
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'talent-manager',
-        'USER': 'postgres',
-        'PASSWORD': 'SQLpassword',
-        'HOST': 'localhost',
-        'PORT': '5432',
-
->>>>>>> e76597946a6e6fa8c742ae9a5fe1ae046ce5a2a3
     }
 }
 

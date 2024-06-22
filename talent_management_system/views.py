@@ -15,7 +15,10 @@ def home(request):
 
 
 def onboard_employee(request):
-    if request.method == 'POST':
+    if request.method == 'GET':
+        form = EmployeeOnboardingForm()
+        return render(request, 'onboard_employee.html', {'form':form})
+    elif request.method == 'POST':
         form = EmployeeOnboardingForm(request.POST)
         if form.is_valid():
             first_name = form.cleaned_data['first_name']
@@ -25,15 +28,14 @@ def onboard_employee(request):
             phone_number = form.cleaned_data.get('phone_number')
             employee = authenticate(first_name=first_name, last_name=last_name, email=email, password=password,
                                     phone_number=phone_number)
-            user = authenticate(first_name=first_name, last_name=last_name, email=email,
-                                password=password, phone_number=phone_number)
-            if user is not None:
+            if employee is not None:
                 form.save()
                 login(request, employee)
                 messages.success(request, 'You have successfully Registered!')
                 return redirect('home')
         else:
             form = EmployeeOnboardingForm()
+            messages.error(request, 'User already Exist!')
             return render(request, 'onboard_employee.html', {'form': form})
 
 

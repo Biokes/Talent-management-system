@@ -126,11 +126,6 @@ class GetEmployeeProfile(forms.ModelForm):
         widgets = {
             'manager_email': forms.TextInput(attrs={'placeholder': 'email ', 'type': 'text'}),
             'password': forms.TextInput(attrs={'placeholder': 'password', 'type': 'password'}),
-<<<<<<< HEAD
             'employee_email': forms.TextInput(attrs={'placeholder': 'Employee email ', 'type': 'text'})
         }
-=======
-            'employee_email': forms.TextInput(attrs={'placeholder': 'Employee email ', 'type': 'text'}),
 
-        }
->>>>>>> e76597946a6e6fa8c742ae9a5fe1ae046ce5a2a3
