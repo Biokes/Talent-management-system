@@ -1,5 +1,5 @@
 from django import forms
-from talent_management_system.models import  Manager, Training, Goal
+from talent_management_system.models import Manager, Training, Goal
 
 from talent_management_system.models import Employee
 
@@ -31,6 +31,8 @@ class ScheduleTrainingForm(forms.ModelForm):
             'end_date': forms.DateInput(attrs={'placeholder': 'end date (YYYY-MM-DD)', 'class': 'form-control'}),
             'location': forms.TextInput(attrs={'placeholder': 'Training location', 'class': 'form-control'})
         }
+
+
 class UpdatePasswordForm(forms.ModelForm):
     class Meta:
         model = Employee
@@ -71,8 +73,8 @@ class ManagerOnboardingForm(forms.ModelForm):
 
 class SetGoalForm(forms.ModelForm):
     class Meta:
-        model = Manager
-        fields = ['boss_email','boss_password','start_date', 'end_date', 'description', 'name']
+        model = Goal
+        fields = ['employee_id', 'start_date', 'end_date', 'description']
         widgets = {
             'boss_email': forms.TextInput(attrs={'placeholder': 'email', 'type': 'text'}),
             'boss_password': forms.TextInput(attrs={'placeholder': 'password', 'type': 'password'}),
@@ -86,7 +88,7 @@ class SetGoalForm(forms.ModelForm):
 class PromoteEmployeeForm(forms.ModelForm):
     class Meta:
         model = Manager
-        fields = ['email', 'password', 'employee_email', 'position']
+        fields = ['email', 'password', 'position']
         widgets = {
             'email': forms.TextInput(attrs={'placeholder': 'email ', 'type': 'text'}),
             'password': forms.TextInput(attrs={'placeholder': 'password', 'type': 'password'}),
@@ -94,15 +96,17 @@ class PromoteEmployeeForm(forms.ModelForm):
             'position': forms.TextInput(attrs={'placeholder': 'POSITION', 'type': 'text'})
         }
 
+
 class DeleteEmployeeForm(forms.ModelForm):
     class Meta:
         model = Manager
-        fields = ['email', 'password', 'employee_email']
+        fields = ['email', 'password']
         widgets = {
             'email': forms.TextInput(attrs={'placeholder': 'email ', 'type': 'text'}),
             'password': forms.TextInput(attrs={'placeholder': 'password', 'type': 'password'}),
             'employee_email': forms.TextInput(attrs={'placeholder': 'staff email', 'type': 'email'})
         }
+
 
 class GetAllEmployeeProfiles(forms.ModelForm):
     class Meta:
@@ -113,10 +117,11 @@ class GetAllEmployeeProfiles(forms.ModelForm):
             'password': forms.TextInput(attrs={'placeholder': 'password', 'type': 'password'}),
         }
 
+
 class GetEmployeeProfile(forms.ModelForm):
     class Meta:
         model = Manager
-        fields = ['email', 'password', 'employee_email']
+        fields = ['email', 'password']
         widgets = {
             'manager_email': forms.TextInput(attrs={'placeholder': 'email ', 'type': 'text'}),
             'password': forms.TextInput(attrs={'placeholder': 'password', 'type': 'password'}),
