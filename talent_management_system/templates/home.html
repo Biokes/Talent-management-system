@@ -4,6 +4,9 @@
     <link rel="stylesheet" href="../static/styles.css">
     <meta charset="UTF-8">
     <title>Title</title>
+    <script>
+        const onBoardEmployeeUrl = "{% url 'onboard_employee' %}";
+    </script>
 </head>
 <body class="body">
 <div class="home-main">
@@ -16,8 +19,12 @@
             <p><span>Data-Driven Insights:</span>Gain valuable insights with comprehensive reports and analytics to make informed decisions.</p>
         </span>
         <div class="buttons">
+<<<<<<< HEAD
             <button class="register">
                 <a href="{% url 'onboard_employee' %}">Register</a></button>
+=======
+            <button class="register" onclick="window.location.href=onBoardEmployeeUrl">Register</button>
+>>>>>>> e76597946a6e6fa8c742ae9a5fe1ae046ce5a2a3
             <button class="login">Login</button>
         </div>
 
