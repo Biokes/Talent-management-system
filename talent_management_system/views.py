@@ -29,7 +29,7 @@ def onboard_employee(request):
             if Employee.objects.filter(email=email).exists():
                 messages.error(request, 'User already exists!')
                 return render(request, 'onboard_employee.html', {'form': form})
-            employee = Employee.objects.create(
+            Employee.objects.create(
                 first_name=first_name,
                 last_name=last_name,
                 email=email,

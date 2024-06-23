@@ -164,3 +164,4 @@ class GetEmployeeProfile(forms.ModelForm):
             'password': forms.TextInput(attrs={'placeholder': 'password', 'type': 'password'}),
             'employee_email': forms.TextInput(attrs={'placeholder': 'Employee email ', 'type': 'text'})
         }
+
