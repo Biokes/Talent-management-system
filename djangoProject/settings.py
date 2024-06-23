@@ -22,9 +22,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-%$$h+hf!-qf^+14w=z25%7s@9__c7*_0#gi!n9_%tdsodcu)hv'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -78,13 +78,10 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'talent-manager',
         'USER': 'postgres',
-        'PASSWORD': 'password',
+        'PASSWORD': 'SQLpassword',
         'HOST': 'localhost',
-        'PORT': '5432'
-# =======
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3'
-# >>>>>>> 716415d59c73df3995b44325bbf149277b204934
+        'PORT': '5432',
+
     }
 }
 
