@@ -17,26 +17,23 @@ def home(request):
 def onboard_employee(request):
     if request.method == 'GET':
         form = EmployeeOnboardingForm()
-        return render(request, 'onboard_employee.html', {'form':form})
+        return render(request, 'onboard_employee.html', {'form': form})
     elif request.method == 'POST':
         form = EmployeeOnboardingForm(request.POST)
         if form.is_valid():
-            first_name = form.cleaned_data['first_name']
-            last_name = form.cleaned_data['last_name']
-            email = form.cleaned_data.get('email')
-            password = form.cleaned_data.get('password')
-            phone_number = form.cleaned_data.get('phone_number')
-            employee = authenticate(first_name=first_name, last_name=last_name, email=email, password=password,
-                                    phone_number=phone_number)
-            if employee is not None:
-                form.save()
-                login(request, employee)
+            employee = form.save(commit=False)
+            employee.set_password(form.cleaned_data['password'])
+            employee.save()
+            user = authenticate(emaiil=form.cleaned_data.get('email'), password=form.cleaned_data.get('password'))
+            if user is not None:
+                login(request, user)
                 messages.success(request, 'You have successfully Registered!')
                 return redirect('home')
+            messages.error(request,'Authentication failed')
         else:
             form = EmployeeOnboardingForm()
             messages.error(request, 'User already Exist!')
-            return render(request, 'onboard_employee.html', {'form': form})
+    return render(request, 'onboard_employee.html', {'form': form})
 
 
 def employee_details(request):

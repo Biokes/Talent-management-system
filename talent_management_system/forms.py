@@ -1,12 +1,12 @@
 from django import forms
-from talent_management_system.models import Manager, Training, Goal
+from talent_management_system.models import Manager, Training, Goal, Staff
 
 from talent_management_system.models import Employee
 
 
 class EmployeeOnboardingForm(forms.ModelForm):
     class Meta:
-        model = Employee
+        model = Staff
         fields = ['first_name', 'last_name', 'email', 'password', 'phone_number']
         widgets = {
             'first_name': forms.TextInput(attrs={'placeholder': 'first name', 'class': 'form-control'}),
