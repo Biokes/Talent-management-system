@@ -33,32 +33,6 @@ class ScheduleTrainingForm(forms.ModelForm):
         }
 
 
-# class UpdatePasswordForm(forms.Form):
-#     class Meta:
-#         model = Employee
-#         fields = ['email', 'password']
-#         current_password = forms.CharField(widget=forms.PasswordInput)
-#         new_password = forms.CharField(widget=forms.PasswordInput)
-#         confirm_password = forms.CharField(widget=forms.PasswordInput)
-#
-#     def clean(self):
-#         cleaned_data = super().clean()
-#         new_password = cleaned_data.get("new_password")
-#         confirm_password = cleaned_data.get("confirm_password")
-#
-#         if new_password != confirm_password:
-#             raise forms.ValidationError("New password and confirm password do not match.")
-#
-#         return cleaned_data
-#
-#     # class Meta:
-#     #     model = Employee
-#     #     fields = ['email', 'password']
-#     #     widgets = {
-#     #         'email': forms.EmailInput(attrs={'placeholder': 'email', 'type': 'text'}),
-#     #         'old_password': forms.PasswordInput(attrs={'placeholder': 'old password', 'type': 'password'}),
-#     #         'new_password': forms.PasswordInput(attrs={'placeholder': 'new password', 'type': 'password'})
-#         }
 class UpdatePasswordForm(forms.Form):
     email = forms.EmailField()
     current_password = forms.CharField(widget=forms.PasswordInput)
@@ -165,3 +139,13 @@ class GetEmployeeProfile(forms.ModelForm):
             'employee_email': forms.TextInput(attrs={'placeholder': 'Employee email ', 'type': 'text'})
         }
 
+
+class SetGoal(forms.ModelForm):
+    class Meta:
+        model = Manager
+        fields = ['email', 'password']
+        widgets = {
+            'manager_email': forms.TextInput(attrs={'placeholder': 'email ', 'type': 'text'}),
+            'password': forms.TextInput(attrs={'placeholder': 'password', 'type': 'password'}),
+            'employee_email': forms.TextInput(attrs={'placeholder': 'Employee email ', 'type': 'text'})
+        }
