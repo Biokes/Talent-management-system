@@ -4,10 +4,10 @@ from django.contrib.auth import authenticate, login
 from talent_management_system.forms import UpdatePasswordForm, SetGoalForm, PromoteEmployeeForm, DeleteEmployeeForm, \
     GetAllEmployeeProfiles, GetEmployeeProfile
 
-from talent_management_system.forms import EmployeeTrainingForm
-from talent_management_system.forms import EmployeeOnboardingForm
+from talent_management_system.forms import EmployeeOnboardingForm, ScheduleTrainingForm
 
 from talent_management_system.models import Employee, Goal, Manager
+from .models import Staff
 
 
 def home(request):
@@ -15,42 +15,75 @@ def home(request):
 
 
 def onboard_employee(request):
-    if request.method == 'POST':
+    if request.method == 'GET':
+        form = EmployeeOnboardingForm()
+        return render(request, 'onboard_employee.html', {'form': form})
+    elif request.method == 'POST':
         form = EmployeeOnboardingForm(request.POST)
         if form.is_valid():
             first_name = form.cleaned_data['first_name']
             last_name = form.cleaned_data['last_name']
-            email = form.cleaned_data.get('email')
-            password = form.cleaned_data.get('password')
-            phone_number = form.cleaned_data.get('phone_number')
-            employee = authenticate(first_name=first_name, last_name=last_name, email=email, password=password,
-                                    phone_number=phone_number)
-            if employee is not None:
-                user = authenticate(first_name=first_name, last_name=last_name, email=email,
-                                    password=password, phone_number=phone_number)
-                if user is not None:
-                    form.save()
-                    login(request, employee)
-                    messages.success(request, 'You have successfully Registered!')
-                    return redirect('home')
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            phone_number = form.cleaned_data['phone_number']
+            if Employee.objects.filter(email=email).exists():
+                messages.error(request, 'User already exists!')
+                return render(request, 'onboard_employee.html', {'form': form})
+            employee = Employee.objects.create(
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                password=password,
+                phone_number=phone_number
+            )
+            messages.success(request, 'You have successfully registered!')
+            return redirect('update_password')
         else:
-            form = EmployeeOnboardingForm()
-            return render(request, 'onboard_employee.html', {'form': form})
-
+            messages.error(request, 'There was an error with your submission.')
+    return render(request, 'onboard_employee.html', {'form': form})
 
 def employee_details(request):
     return render(request, 'onboard_employee.html')
 
 
+def schedule_training(request):
+    if request.method == 'POST':
+        form = ScheduleTrainingForm(request.POST)
+        if form.is_valid():
+            manager_email = form.cleaned_data['manager_email']
+            title = form.cleaned_data['title']
+            description = form.cleaned_data['description']
+            start_date = form.cleaned_data['start_date']
+            end_date = form.cleaned_data['end_date']
+            location = form.cleaned_data['location']
+            training = (authenticate
+                        (manager_email=manager_email, title=title, description=description, start_date=start_date,
+                         end_date=end_date, location=location))
+            if training is not None:
+                form.save()
+                training.save()
+                messages.success(request, 'Training scheduled')
+                return redirect('home')
+        else:
+            form = ScheduleTrainingForm()
+            return render(request, 'schedule_training.html', {'form': form})
+
+
 def update_password(request):
-    if request.method == 'PATCH':
-        form = UpdatePasswordForm(request.PATCH)
+    if request.method == 'GET':
+        form = UpdatePasswordForm()
+        return render(request, 'update_employee_password.html',{'form': form})
+    elif request.method == 'POST':
+        form = UpdatePasswordForm(request.POST)
         if form.is_valid:
-            employee = form.save(commit=False)
-            gotten_id = form.cleaned_data["gotten_id"]
-            old_password = form.cleaned_data["password"]
-            new_password = form.cleaned_data['new_password']
-            employee = authenticate(email=gotten_id, password=old_password)
+            messages.success(request,'form is updated')
+            email = form['email']
+            old_password = form['current_password']
+            new_password = form['new_password']
+            confirm_new = form['confirm_password']
+            if confirm_new is not new_password:
+                messages.success(request, 'Password did not match')
+            employee = authenticate(email=new_password, password=old_password)
             if employee is not None:
                 employee.password = new_password
                 employee.save()
@@ -61,6 +94,8 @@ def update_password(request):
     else:
         form = UpdatePasswordForm()
         return render(request, 'update_employee_password.html', {'form': form})
+    return render(request, 'home.html', {'form': form})
+
 
 def promote_employee(request):
     if request.method == 'PATCH':
@@ -89,13 +124,17 @@ def set_goals_for_employee(request):
         form = SetGoalForm(request.POST)
         if form.is_valid():
             try:
-                manager = authenticate(email=form.cleaned_data['boss_email'],
-                                       password=form.cleaned_data['boss_password'])
+                manager = Manager.objects.get(email=form.cleaned_data['boss_email'],
+                                              password=form.cleaned_data['boss_password'])
                 if manager is None:
                     messages.error(request, 'Invalid manager details.' +
-                                            ' Please enter a valid manager details.')
+                                   ' Please enter a valid manager details.')
                     return redirect('set_goals_for_employee')
                 employee = Employee.objects.get(email=form.cleaned_data['email'])
+                if employee is None:
+                    messages.error(request, 'Invalid manager details.' +
+                                   ' Please enter a valid manager details.')
+                    return redirect('set_goals_for_employee')
                 goal = Goal.objects.create(
                     employee=employee.employee_id,
                     start_date=form.cleaned_data['start_date'],
@@ -118,6 +157,7 @@ def set_goals_for_employee(request):
 def search_for_all_employees(request):
     if request.method == 'GET':
         form = GetAllEmployeeProfiles(request.GET)
+        context = {'form': form}
         if form.is_valid():
             try:
                 email = form.cleaned_data['email']
@@ -125,7 +165,7 @@ def search_for_all_employees(request):
                 manager = authenticate(email=email, password=password)
                 if manager is not None:
                     employees = Employee.objects.all()
-                    return render('', employees,{'form':form})
+                    return render('', employees, {'form': form})
                 else:
                     messages.error(request, 'Invalid manager details. Please enter a valid manager details.')
                     return redirect('set_goals_for_employee')
@@ -133,14 +173,13 @@ def search_for_all_employees(request):
                 messages.error(request, 'An error occured.')
                 return redirect('set_goals_for_employee')
 
-    context = {'form': form}
     return render(request, 'set_goals_for_employee.html', context)
 
 
 def delete_employee(request):
     if request.method == 'DELETE':
         form = DeleteEmployeeForm(request.DELETE)
-        context = {'form':form}
+        context = {'form': form}
         if form.is_valid():
             try:
                 manager = authenticate(email=form.cleaned_data['email'], password=form.cleaned_data['password'], )
@@ -152,7 +191,7 @@ def delete_employee(request):
                     messages.error(request, 'Invalid Details provided.')
                     return render(request, 'set_goals_for_employee.html', context)
                 gotten_employee.delete()
-                messages.success(request,"deleted successfully")
+                messages.success(request, "deleted successfully")
             except Exception:
                 messages.error(request, 'Invalid Details provided.')
                 return render(request, 'set_goals_for_employee.html', context)
@@ -182,10 +221,8 @@ def search_employee_profiles(request):
             except Exception:
                 messages.error(request, 'An error occured.')
                 return redirect('set_goals_for_employee')
-
     context = {'form': form}
     return render(request, 'set_goals_for_employee.html', context)
-
 
 # def manage_employee_performance(request):
 #     if request.method == 'GET':

@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.fields.related import ForeignKey
 
 
 class Staff(models.Model):
@@ -69,6 +70,7 @@ class Training(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     location = models.CharField(max_length=255)
+    manager_email = models.EmailField(default="no email")
 
     class Meta:
         db_table = "trainings"

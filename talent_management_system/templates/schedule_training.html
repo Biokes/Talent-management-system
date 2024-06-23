@@ -2,14 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Register Form</title>
+    <title>schedule training</title>
 </head>
 <body>
         {% extends 'base.html' %}
 {% block content %}
+
+
 <div class="col-md-6 offset-md-3">
-<h1>Register</h1>
+<h1>Schedule Training</h1>
 <br/>
+
 <form method="POST" action="">
 	{% csrf_token %}
 	{% if form.errors %}
@@ -23,11 +26,17 @@
 			  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 			</div>
 		{% endif %}
+
 	{{ form.as_p }}
+
 	<br/>
-	  <button type="submit" class="btn btn-secondary">Register</button>
+	  <button type="submit" class="btn btn-secondary">Submit</button>
 	</form>
+
+
+
 </div>
+
 {% endblock %}
 </body>
-</html>	
+</html>
