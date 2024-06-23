@@ -29,7 +29,7 @@ def onboard_employee(request):
             if Employee.objects.filter(email=email).exists():
                 messages.error(request, 'User already exists!')
                 return render(request, 'onboard_employee.html', {'form': form})
-            employee = Employee.objects.create(
+            Employee.objects.create(
                 first_name=first_name,
                 last_name=last_name,
                 email=email,
@@ -41,6 +41,7 @@ def onboard_employee(request):
         else:
             messages.error(request, 'There was an error with your submission.')
     return render(request, 'onboard_employee.html', {'form': form})
+
 
 def employee_details(request):
     return render(request, 'onboard_employee.html')
@@ -72,11 +73,11 @@ def schedule_training(request):
 def update_password(request):
     if request.method == 'GET':
         form = UpdatePasswordForm()
-        return render(request, 'update_employee_password.html',{'form': form})
+        return render(request, 'update_employee_password.html', {'form': form})
     elif request.method == 'POST':
         form = UpdatePasswordForm(request.POST)
         if form.is_valid:
-            messages.success(request,'form is updated')
+            messages.success(request, 'form is updated')
             email = form['email']
             old_password = form['current_password']
             new_password = form['new_password']
