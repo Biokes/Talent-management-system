@@ -86,8 +86,8 @@ def update_password(request):
 
 
 def promote_employee(request):
-    if request.method == 'PATCH':
-        form = PromoteEmployeeForm(request.PATCH)
+    if request.method == 'POST':
+        form = PromoteEmployeeForm(request.POST)
         if form.is_valid():
             try:
                 email = form.cleaned_data['email']
@@ -105,6 +105,10 @@ def promote_employee(request):
             except Exception:
                 messages.error(request, 'An error occured.')
                 return redirect('set_goals_for_employee')
+
+        else:
+            form = PromoteEmployeeForm()
+    return render(request, 'promote_employee.html', {'form': form})
 
 
 def set_goals_for_employee(request):
