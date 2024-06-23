@@ -21,18 +21,25 @@ def onboard_employee(request):
     elif request.method == 'POST':
         form = EmployeeOnboardingForm(request.POST)
         if form.is_valid():
-            employee = form.save(commit=False)
-            employee.set_password(form.cleaned_data['password'])
-            employee.save()
-            user = authenticate(emaiil=form.cleaned_data.get('email'), password=form.cleaned_data.get('password'))
-            if user is not None:
-                login(request, user)
-                messages.success(request, 'You have successfully Registered!')
-                return redirect('home')
-            messages.error(request,'Authentication failed')
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            phone_number = form.cleaned_data['phone_number']
+            if Employee.objects.filter(email=email).exists():
+                messages.error(request, 'User already exists!')
+                return render(request, 'onboard_employee.html', {'form': form})
+            employee = Employee.objects.create(
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                password=password,
+                phone_number=phone_number
+            )
+            messages.success(request, 'You have successfully registered!')
+            return redirect('update_password')
         else:
-            form = EmployeeOnboardingForm()
-            messages.error(request, 'User already Exist!')
+            messages.error(request, 'There was an error with your submission.')
     return render(request, 'onboard_employee.html', {'form': form})
 
 
@@ -64,14 +71,20 @@ def schedule_training(request):
 
 
 def update_password(request):
-    if request.method == 'PATCH':
-        form = UpdatePasswordForm(request.PATCH)
+    if request.method == 'GET':
+        form = UpdatePasswordForm()
+        return render(request, 'update_employee_password.html', {'form': form})
+    elif request.method == 'POST':
+        form = UpdatePasswordForm(request.POST)
         if form.is_valid:
-            employee = form.save(commit=False)
-            gotten_id = form.cleaned_data["gotten_id"]
-            old_password = form.cleaned_data["password"]
-            new_password = form.cleaned_data['new_password']
-            employee = authenticate(email=gotten_id, password=old_password)
+            messages.success(request, 'form is updated')
+            email = form['email']
+            old_password = form['current_password']
+            new_password = form['new_password']
+            confirm_new = form['confirm_password']
+            if confirm_new is not new_password:
+                messages.success(request, 'Password did not match')
+            employee = authenticate(email=new_password, password=old_password)
             if employee is not None:
                 employee.password = new_password
                 employee.save()
@@ -82,6 +95,7 @@ def update_password(request):
     else:
         form = UpdatePasswordForm()
         return render(request, 'update_employee_password.html', {'form': form})
+    return render(request, 'home.html', {'form': form})
 
 
 def promote_employee(request):
@@ -208,7 +222,6 @@ def search_employee_profiles(request):
             except Exception:
                 messages.error(request, 'An error occured.')
                 return redirect('set_goals_for_employee')
-
     context = {'form': form}
     return render(request, 'set_goals_for_employee.html', context)
 
