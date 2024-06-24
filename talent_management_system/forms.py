@@ -1,12 +1,12 @@
 from django import forms
-from talent_management_system.models import Manager, Training, Goal
+from talent_management_system.models import Manager, Training, Goal, Staff
 
 from talent_management_system.models import Employee
 
 
 class EmployeeOnboardingForm(forms.ModelForm):
     class Meta:
-        model = Employee
+        model = Staff
         fields = ['first_name', 'last_name', 'email', 'password', 'phone_number']
         widgets = {
             'first_name': forms.TextInput(attrs={'placeholder': 'first name', 'class': 'form-control'}),
@@ -33,15 +33,25 @@ class ScheduleTrainingForm(forms.ModelForm):
         }
 
 
-class UpdatePasswordForm(forms.ModelForm):
+class UpdatePasswordForm(forms.Form):
+    email = forms.EmailField()
+    current_password = forms.CharField(widget=forms.PasswordInput)
+    new_password = forms.CharField(widget=forms.PasswordInput)
+    confirm_password = forms.CharField(widget=forms.PasswordInput)
+
     class Meta:
         model = Employee
         fields = ['email', 'password']
-        widgets = {
-            'email': forms.EmailInput(attrs={'placeholder': 'email', 'type': 'text'}),
-            'old_password': forms.PasswordInput(attrs={'placeholder': 'old password', 'type': 'password'}),
-            'new_password': forms.PasswordInput(attrs={'placeholder': 'new password', 'type': 'password'})
-        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        email = cleaned_data.get('email')
+        new_password = cleaned_data.get("new_password")
+        confirm_password = cleaned_data.get("confirm_password")
+        if new_password != confirm_password:
+            raise forms.ValidationError("New password and confirm password do not match.")
+
+        return cleaned_data
 
 
 class EmployeeTrainingForm(forms.ModelForm):
@@ -127,10 +137,15 @@ class GetEmployeeProfile(forms.ModelForm):
             'manager_email': forms.TextInput(attrs={'placeholder': 'email ', 'type': 'text'}),
             'password': forms.TextInput(attrs={'placeholder': 'password', 'type': 'password'}),
 
-            'employee_email': forms.TextInput(attrs={'placeholder': 'Employee email ', 'type': 'text'}),
-
-
-            'employee_email': forms.TextInput(attrs={'placeholder': 'Employee email ', 'type': 'text'}),
-
+            'employee_email': forms.TextInput(attrs={'placeholder': 'Employee email ', 'type': 'text'})
         }
 
+class SetGoal(forms.ModelForm):
+    class Meta:
+        model = Manager
+        fields = ['email', 'password']
+        widgets = {
+            'manager_email': forms.TextInput(attrs={'placeholder': 'email ', 'type': 'text'}),
+            'password': forms.TextInput(attrs={'placeholder': 'password', 'type': 'password'}),
+            'employee_email': forms.TextInput(attrs={'placeholder': 'Employee email ', 'type': 'text'})
+        }

@@ -6,5 +6,8 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('add_employee/', views.onboard_employee, name='onboard_employee'),
     path('schedule_training/', views.schedule_training, name='schedule_training'),
-    path('promote_employee/',views.promote_employee, name='promote_employee')
+
+    path('promote_employee/',views.promote_employee, name='promote_employee'),
+    path('update_password/', views.update_password, name='update_password'),
+    path('get_all_employees/', views.search_for_all_employees, name='search_for_all_employees')
 ]

@@ -15,26 +15,32 @@ def home(request):
 
 
 def onboard_employee(request):
-    if request.method == 'POST':
+    if request.method == 'GET':
+        form = EmployeeOnboardingForm()
+        return render(request, 'onboard_employee.html', {'form': form})
+    elif request.method == 'POST':
         form = EmployeeOnboardingForm(request.POST)
         if form.is_valid():
             first_name = form.cleaned_data['first_name']
             last_name = form.cleaned_data['last_name']
-            email = form.cleaned_data.get('email')
-            password = form.cleaned_data.get('password')
-            phone_number = form.cleaned_data.get('phone_number')
-            employee = authenticate(first_name=first_name, last_name=last_name, email=email, password=password,
-                                    phone_number=phone_number)
-            user = authenticate(first_name=first_name, last_name=last_name, email=email,
-                                password=password, phone_number=phone_number)
-            if user is not None:
-                form.save()
-                login(request, employee)
-                messages.success(request, 'You have successfully Registered!')
-                return redirect('home')
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            phone_number = form.cleaned_data['phone_number']
+            if Employee.objects.filter(email=email).exists():
+                messages.error(request, 'User already exists!')
+                return render(request, 'onboard_employee.html', {'form': form})
+            Employee.objects.create(
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                password=password,
+                phone_number=phone_number
+            )
+            messages.success(request, 'You have successfully registered!')
+            return redirect('update_password')
         else:
-            form = EmployeeOnboardingForm()
-            return render(request, 'onboard_employee.html', {'form': form})
+            messages.error(request, 'There was an error with your submission.')
+    return render(request, 'onboard_employee.html', {'form': form})
 
 
 def employee_details(request):
@@ -65,14 +71,20 @@ def schedule_training(request):
 
 
 def update_password(request):
-    if request.method == 'PATCH':
-        form = UpdatePasswordForm(request.PATCH)
+    if request.method == 'GET':
+        form = UpdatePasswordForm()
+        return render(request, 'update_employee_password.html', {'form': form})
+    elif request.method == 'POST':
+        form = UpdatePasswordForm(request.POST)
         if form.is_valid:
-            employee = form.save(commit=False)
-            gotten_id = form.cleaned_data["gotten_id"]
-            old_password = form.cleaned_data["password"]
-            new_password = form.cleaned_data['new_password']
-            employee = authenticate(email=gotten_id, password=old_password)
+            messages.success(request, 'form is updated')
+            email = form['email']
+            old_password = form['current_password']
+            new_password = form['new_password']
+            confirm_new = form['confirm_password']
+            if confirm_new is not new_password:
+                messages.success(request, 'Password did not match')
+            employee = authenticate(email=new_password, password=old_password)
             if employee is not None:
                 employee.password = new_password
                 employee.save()
@@ -83,6 +95,7 @@ def update_password(request):
     else:
         form = UpdatePasswordForm()
         return render(request, 'update_employee_password.html', {'form': form})
+    return render(request, 'home.html', {'form': form})
 
 
 def promote_employee(request):
@@ -108,7 +121,7 @@ def promote_employee(request):
 
         else:
             form = PromoteEmployeeForm()
-    return render(request, 'promote_employee.html', {'form': form})
+        return render(request, 'promote_employee.html', {'form': form})
 
 
 def set_goals_for_employee(request):
@@ -213,7 +226,6 @@ def search_employee_profiles(request):
             except Exception:
                 messages.error(request, 'An error occured.')
                 return redirect('set_goals_for_employee')
-
     context = {'form': form}
     return render(request, 'set_goals_for_employee.html', context)
 
